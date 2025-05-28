@@ -1,0 +1,43 @@
+  <!-- Settings modal -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Einstellungen</h2>
+        <span class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="settings-section">
+          <h3>KI-Funktionen (OpenAI)</h3>
+          <p>Für die KI-basierten Funktionen (Zusammenfassungen, thematische Clustering) benötigen Sie einen eigenen API-Schlüssel von OpenAI.</p>
+          
+          <div class="api-key-settings">
+            <label for="openai-api-key">OpenAI API-Schlüssel:</label>
+            <div class="api-key-input">
+              <input type="password" id="openai-api-key" class="form-control" placeholder="sk-..." autocomplete="off">
+              <button id="toggle-api-key" class="btn btn-outline-secondary">
+                <span class="material-icons-round">visibility_off</span>
+              </button>
+            </div>
+            <small class="form-text text-muted">Ihr API-Schlüssel wird nur lokal in Ihrem Browser gespeichert.</small>
+          </div>
+          
+          <div class="api-key-actions">
+            <button id="save-api-key" class="btn btn-primary">Speichern</button>
+            <button id="clear-api-key" class="btn btn-outline-danger">Löschen</button>
+          </div>
+          
+          <div id="api-key-status" class="api-key-status mt-2"></div>
+          
+          <div class="mt-3">
+            <p>Wo erhalte ich einen API-Schlüssel?</p>
+            <ol>
+              <li>Besuchen Sie <a href="https://platform.openai.com/signup" target="_blank">OpenAI</a> und erstellen Sie ein Konto</li>
+              <li>Navigieren Sie zu API Keys und erstellen Sie einen neuen Schlüssel</li>
+              <li>Kopieren Sie den Schlüssel und fügen Sie ihn hier ein</li>
+            </ol>
+            <p><strong>Hinweis:</strong> Die Nutzung der OpenAI API ist mit Kosten verbunden, die direkt von OpenAI berechnet werden.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
