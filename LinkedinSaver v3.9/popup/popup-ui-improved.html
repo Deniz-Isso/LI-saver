@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Saver</title>
+  <link rel="stylesheet" href="popup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+<body>
+  <div class="popup-wrapper">
+    <header class="header">
+      <h1 class="title">Post Saver</h1>
+    </header>
+    
+    <div class="tab-buttons">
+      <button id="auto-tab" class="tab-button active">Auto-Detect</button>
+      <button id="manual-tab" class="tab-button">Manual URL</button>
+    </div>
+    
+    <!-- Auto-Detect Tab -->
+    <div id="auto-detect-content" class="tab-content">
+      <div id="not-linkedin" class="message-container hidden">
+        <div class="icon-circle warning">
+          <span class="material-icons-round">public_off</span>
+        </div>
+        <div class="message">
+          <h2>Not a LinkedIn Page</h2>
+          <p>Please navigate to LinkedIn to detect and save posts.</p>
+        </div>
+      </div>
+      
+      <div id="no-post-detected" class="message-container hidden">
+        <div class="icon-circle warning">
+          <span class="material-icons-round">feed</span>
+        </div>
+        <div class="message">
+          <h2>No Post Detected</h2>
+          <p>Scroll to a post on LinkedIn or try the Manual URL tab.</p>
+        </div>
+      </div>
+      
+      <div id="post-form" class="hidden">
+        <div class="post-preview">
+          <div class="post-preview-header">
+            <h3>Post Preview</h3>
+            <a id="post-link" href="#" target="_blank" class="post-link">
+              <span class="material-icons-round">open_in_new</span>
+            </a>
+          </div>
+          <div id="post-author" class="post-author"></div>
+          <div id="post-content" class="post-content"></div>
+          <div id="post-date" class="post-date"></div>
+          <div id="post-images" class="post-images hidden"></div>
+        </div>
+        
+        <div class="form-section">
+          <label for="category-input">Categories (tags)</label>
+          <div class="input-with-icon">
+            <input type="text" id="category-input" placeholder="Add categories...">
+            <button id="add-category-button" class="btn-flat">
+              Add
+            </button>
+          </div>
+          <div id="selected-categories" class="tags-container"></div>
+          <div id="category-suggestions" class="suggestions"></div>
+        </div>
+        
+        <div class="form-section folder-section">
+          <label for="folder-select">Save to Folder</label>
+          <div class="select-with-button">
+            <select id="folder-select"></select>
+            <button id="add-folder-button" class="btn-flat">
+              New
+            </button>
+          </div>
+          <div id="new-folder-section" class="hidden">
+            <div class="input-with-icon">
+              <input type="text" id="new-folder-input" placeholder="New folder name">
+              <button id="save-folder-button" class="btn-flat">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-section">
+          <label for="notes">Notes</label>
+          <textarea id="notes" rows="3" placeholder="Add your notes here..."></textarea>
+        </div>
+        
+        <div class="button-container">
+          <button id="save-post" class="btn btn-primary">
+            <span class="material-icons-round">bookmark_add</span>
+            Save Post
+          </button>
+        </div>
+      </div>
+      
+      <div id="status-message" class="status-message hidden"></div>
+    </div>
+    
+    <!-- Manual URL Tab -->
+    <div id="manual-url-content" class="tab-content hidden">
+      <div class="form-section">
+        <label for="manual-url">LinkedIn Post URL</label>
+        <div class="input-with-icon">
+          <input type="text" id="manual-url" placeholder="https://www.linkedin.com/posts/...">
+          <button id="extract-button" class="btn-flat">
+            Extract
+          </button>
+        </div>
+        <div id="manual-extract-status" class="extract-status"></div>
+      </div>
+      
+      <div id="manual-post-form" class="hidden">
+        <div class="post-preview">
+          <div class="post-preview-header">
+            <h3>Post Preview</h3>
+            <a id="manual-post-link" href="#" target="_blank" class="post-link">
+              <span class="material-icons-round">open_in_new</span>
+            </a>
+          </div>
+          <div id="manual-post-author" class="post-author"></div>
+          <div id="manual-post-content" class="post-content"></div>
+          <div id="manual-post-date" class="post-date"></div>
+          <div id="manual-post-images" class="post-images hidden"></div>
+        </div>
+        
+        <div class="form-section">
+          <label for="manual-category-input">Categories (tags)</label>
+          <div class="input-with-icon">
+            <input type="text" id="manual-category-input" placeholder="Add categories...">
+            <button id="manual-add-category-button" class="btn-flat">
+              Add
+            </button>
+          </div>
+          <div id="manual-selected-categories" class="tags-container"></div>
+          <div id="manual-category-suggestions" class="suggestions"></div>
+        </div>
+        
+        <div class="form-section folder-section">
+          <label for="manual-folder-select">Save to Folder</label>
+          <div class="select-with-button">
+            <select id="manual-folder-select"></select>
+            <button id="manual-add-folder-button" class="btn-flat">
+              New
+            </button>
+          </div>
+          <div id="manual-new-folder-section" class="hidden">
+            <div class="input-with-icon">
+              <input type="text" id="manual-new-folder-input" placeholder="New folder name">
+              <button id="manual-save-folder-button" class="btn-flat">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-section">
+          <label for="manual-notes">Notes</label>
+          <textarea id="manual-notes" rows="3" placeholder="Add your notes here..."></textarea>
+        </div>
+        
+        <div class="button-container">
+          <button id="save-manual-post" class="btn btn-primary">
+            <span class="material-icons-round">bookmark_add</span>
+            Save Post
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- First time use dialog -->
+    <div id="first-time-dialog" class="first-time-dialog hidden">
+      <div class="dialog-content">
+        <h2>Welcome to Post Saver!</h2>
+        <p>This extension helps you save and organize LinkedIn posts for later reference.</p>
+        <p>Optional AI features require an OpenAI API key for enhanced functionality.</p>
+        <div class="dialog-buttons">
+          <button id="setup-api-key" class="btn btn-primary">Set Up API Key</button>
+          <button id="dismiss-welcome" class="btn">Dismiss</button>
+        </div>
+      </div>
+    </div>
+    
+    <footer class="footer">
+      <div class="footer-buttons">
+        <button id="view-saved-posts-btn" class="btn btn-link">
+          <span class="material-icons-round">folder</span>
+          View Saved Posts
+        </button>
+        <button id="open-settings-btn" class="btn btn-link">
+          <span class="material-icons-round">settings</span>
+          Settings
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <script src="../utils/storage.js"></script>
+  <script src="../utils/post-processor.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
