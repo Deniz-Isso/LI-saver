@@ -1,0 +1,65 @@
+/* Settings Content Styles */
+#settings-content {
+  padding: 15px;
+}
+
+.settings-section {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.settings-section h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.settings-section h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #444;
+  font-weight: 600;
+}
+
+.settings-section p {
+  margin-bottom: 15px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #2d5ca6;
+  box-shadow: 0 0 0 2px rgba(45, 92, 166, 0.2);
+}
+
+.form-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+  background-color: #fff;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #2d5ca6;
+  box-shadow: 0 0 0 2px rgba(45, 92, 166, 0.2);
+}
