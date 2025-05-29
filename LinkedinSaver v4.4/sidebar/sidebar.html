@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Post Saver</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-icons@1.13.10/iconfont/round.css">
+  <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+  <div class="container">
+    <header class="app-header">
+  <link rel="stylesheet" href="css/api-settings.css">
+  <link rel="stylesheet" href="css/settings-content.css">
+      <h1>Saved Posts</h1>
+      <div class="toolbar">
+        <div class="search-container">
+          <span class="material-icons-round search-icon">search</span>
+          <input type="text" id="search-input" class="form-control" placeholder="Search posts...">
+        </div>
+        <div class="action-buttons">
+          <button id="clustering-btn" class="action-button" title="Thematisches Clustering & Zusammenfassung">
+            <span class="material-icons-round">dashboard</span>
+          </button>
+          <button id="bulk-actions-btn" class="action-button" title="Bulk Actions">
+            <span class="material-icons-round">check_box</span>
+          </button>
+          <button id="settings-btn" class="action-button" title="Settings">
+            <span class="material-icons-round">settings</span>
+          </button>
+        </div>
+      </div>
+    </header>
+    
+    <div class="content-area">
+      <div class="sidebar">
+        <div class="sidebar-tabs">
+          <button id="tab-categories" class="sidebar-tab active">Categories</button>
+          <button id="tab-folders" class="sidebar-tab">Folders</button>
+        </div>
+          <button id="tab-settings" class="sidebar-tab">Settings</button>
+        
+        <div id="categories-content" class="sidebar-content active">
+          <div class="sidebar-section">
+            <div class="section-header">
+              <h2>Categories</h2>
+              <button id="manage-categories-btn" class="manage-btn" title="Manage Categories">
+                <span class="material-icons-round">edit</span>
+              </button>
+            </div>
+            <ul id="category-list" class="filter-list">
+              <!-- Categories will be added here dynamically -->
+            </ul>
+          </div>
+        </div>
+        
+        <div id="folders-content" class="sidebar-content">
+          <div class="sidebar-section">
+            <div class="section-header">
+              <h2>Folders</h2>
+              <button id="manage-folders-btn" class="manage-btn" title="Manage Folders">
+                <span class="material-icons-round">edit</span>
+              </button>
+            </div>
+            <ul id="folder-list" class="filter-list">
+              <li class="filter-item active" data-filter="all">All Folders</li>
+              <li class="filter-item" data-filter="none">No Folder</li>
+              <!-- Folders will be added here dynamically -->
+            </ul>
+          </div>
+        </div>
+        
+        <div id="settings-content" class="sidebar-content hidden">
+          <div class="sidebar-section">
+            <div class="section-header">
+              <h2>API-Einstellungen</h2>
+            </div>
+            <div class="api-settings">
+              <div class="api-key-container">
+                <p>Für KI-Funktionen wie Kategorievorschläge und Zusammenfassungen wird ein OpenAI API-Schlüssel benötigt.</p>
+                <div class="input-group mb-3">
+                  <input type="password" id="openai-api-key" class="form-control" placeholder="OpenAI API-Schlüssel">
+                  <button id="toggle-api-key" class="btn btn-outline-secondary" type="button">
+                    <span class="material-icons-round">visibility_off</span>
+                  </button>
+                </div>
+                <div class="api-key-actions">
+                  <button id="save-api-key" class="btn btn-primary">Speichern</button>
+                  <button id="clear-api-key" class="btn btn-outline-danger">Löschen</button>
+                </div>
+                <div id="api-key-status" class="api-key-status mt-2"></div>
+                <div class="api-info mt-3">
+                  <p><strong>Wo erhalte ich einen API-Schlüssel?</strong></p>
+                  <ol>
+                    <li>Erstellen Sie einen Account bei <a href="https://openai.com" target="_blank">OpenAI</a></li>
+                    <li>Navigieren Sie zu <a href="https://platform.openai.com/api-keys" target="_blank">API Keys</a></li>
+                    <li>Erstellen Sie einen neuen API-Schlüssel</li>
+                    <li>Kopieren Sie den Schlüssel und fügen Sie ihn hier ein</li>
+                  </ol>
+                  <p class="small">Ihr API-Schlüssel wird sicher in Ihrem Browser gespeichert und nicht an unsere Server gesendet.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="section-header">
+              <h2>Daten-Management</h2>
+            </div>
+            <div class="data-management">
+              <div class="export-import-container">
+                <div class="action-group">
+                  <h3>Daten exportieren</h3>
+                  <p>Sichern Sie Ihre gespeicherten Posts, Kategorien und Ordner.</p>
+                  <button id="export-data-btn" class="btn btn-primary">Daten exportieren</button>
+                </div>
+                <div class="action-group">
+                  <h3>Daten importieren</h3>
+                  <p>Stellen Sie eine vorherige Sicherung wieder her.</p>
+                  <div class="d-flex">
+                    <button id="import-data-btn" class="btn btn-primary">Datei auswählen</button>
+                    <input type="file" id="import-data-file" accept=".json" class="d-none">
+                  </div>
+                  <div id="import-preview" class="import-preview mt-3 hidden">
+                    <h4>Import-Vorschau</h4>
+                    <div id="import-details" class="import-details"></div>
+                    <div class="d-flex mt-2">
+                      <button id="apply-import" class="btn btn-success me-2">Importieren</button>
+                      <button id="cancel-import" class="btn btn-outline-secondary">Abbrechen</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <h2>Sort By</h2>
+          <select id="sort-select" class="form-select">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="author">Author Name</option>
+          </select>
+        </div>
+        
+        <div class="sidebar-section">
+          <h2>Zeit-Filter</h2>
+          <select id="time-filter-select" class="form-select">
+            <option value="all">Alle Zeiträume</option>
+            <option value="today">Heute</option>
+            <option value="thisWeek">Diese Woche</option>
+            <option value="thisMonth">Dieser Monat</option>
+            <option value="last3Months">Letzte 3 Monate</option>
+            <option value="thisYear">Dieses Jahr</option>
+            <option value="custom">Benutzerdefiniert</option>
+          </select>
+          <div id="custom-date-container" class="custom-date-container hidden">
+            <div class="date-range">
+              <label for="date-from">Von:</label>
+              <input type="date" id="date-from" class="form-control">
+            </div>
+            <div class="date-range">
+              <label for="date-to">Bis:</label>
+              <input type="date" id="date-to" class="form-control">
+            </div>
+            <button id="apply-custom-date" class="btn btn-sm btn-primary">Anwenden</button>
+          </div>
+        </div>
+        
+        <div class="sidebar-section">
+          <div class="section-header">
+            <h2>Data Management</h2>
+          </div>
+          <div class="data-management-buttons">
+            <button id="export-btn" class="data-btn">
+              <span class="material-icons-round">file_download</span>
+              Export Data
+            </button>
+            <button id="import-btn" class="data-btn">
+              <span class="material-icons-round">file_upload</span>
+              Import Data
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="main-content">
+        <!-- Bulk actions toolbar (hidden by default) -->
+        <div id="bulk-actions-toolbar" class="bulk-actions-toolbar hidden">
+          <div class="bulk-info">
+            <span id="selected-count">0</span> posts selected
+          </div>
+          <div class="bulk-actions">
+            <button id="bulk-select-all" class="bulk-action-btn">
+              <span class="material-icons-round">select_all</span>
+              Select All
+            </button>
+            <button id="bulk-add-categories" class="bulk-action-btn">
+              <span class="material-icons-round">add_circle</span>
+              Add Categories
+            </button>
+            <button id="bulk-move-folder" class="bulk-action-btn">
+              <span class="material-icons-round">drive_file_move</span>
+              Move to Folder
+            </button>
+            <button id="bulk-delete" class="bulk-action-btn danger">
+              <span class="material-icons-round">delete</span>
+              Delete
+            </button>
+            <button id="bulk-cancel" class="bulk-action-btn">
+              <span class="material-icons-round">close</span>
+              Cancel
+            </button>
+          </div>
+        </div>
+        
+        <div id="posts-container" class="posts-container">
+          <!-- Posts will be added here dynamically -->
+          <div id="empty-state" class="empty-state hidden">
+            <div class="empty-state-icon">
+              <span class="material-icons-round">inbox</span>
+            </div>
+            <h3>No saved posts yet</h3>
+            <p>Your saved posts will appear here.</p>
+          </div>
+          
+          <div id="no-results" class="empty-state hidden">
+            <div class="empty-state-icon">
+              <span class="material-icons-round">search_off</span>
+            </div>
+            <h3>No posts found</h3>
+            <p>Try adjusting your search or category filter.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Post detail modal -->
+  <div id="post-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">Post Details</h2>
+        <span id="post-modal-close-btn" class="close-modal">&times;</span>
+      </div>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+  
+  <!-- Category management modal -->
+  <div id="category-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Manage Categories</h2>
+        <span id="category-modal-close-btn" class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="category-management">
+          <div class="add-category">
+            <input type="text" id="new-category-input" class="form-control" placeholder="New category name">
+            <button id="add-category-btn" class="btn btn-primary">Add</button>
+          </div>
+          <div class="category-list-container">
+            <ul id="manage-category-list" class="manage-list">
+              <!-- Categories will be added here dynamically -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Folder management modal -->
+  <div id="folder-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Manage Folders</h2>
+        <span id="folder-modal-close-btn" class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="folder-management">
+          <div class="add-folder">
+            <input type="text" id="new-folder-input" class="form-control" placeholder="New folder name">
+            <button id="add-folder-btn" class="btn btn-primary">Add</button>
+          </div>
+          <div class="folder-list-container">
+            <ul id="manage-folder-list" class="manage-list">
+              <!-- Folders will be added here dynamically -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bulk add categories modal -->
+  <div id="bulk-categories-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add Categories to Selected Posts</h2>
+        <span id="bulk-categories-modal-close-btn" class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="category-selection">
+          <div id="bulk-selected-categories" class="selected-categories"></div>
+          <input type="text" id="bulk-category-input" class="form-control" placeholder="Add category">
+          <div id="bulk-category-suggestions" class="category-suggestions"></div>
+        </div>
+        <div class="modal-actions">
+          <button id="bulk-categories-apply" class="btn btn-primary">Apply</button>
+          <button id="bulk-categories-cancel" class="btn btn-secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bulk move to folder modal -->
+  <div id="bulk-folder-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Move Selected Posts to Folder</h2>
+        <span id="bulk-folder-modal-close-btn" class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="folder-selection">
+          <select id="bulk-folder-select" class="form-select">
+            <option value="">No Folder</option>
+            <!-- Folders will be added here dynamically -->
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button id="bulk-folder-apply" class="btn btn-primary">Apply</button>
+          <button id="bulk-folder-cancel" class="btn btn-secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Settings modal -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Einstellungen</h2>
+        <span id="settings-modal-close-btn" class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="settings-section">
+          <h3>KI-Funktionen (OpenAI)</h3>
+          <p>Für die KI-basierten Funktionen (Zusammenfassungen, thematische Clustering) benötigen Sie einen eigenen API-Schlüssel von OpenAI.</p>
+          
+          <div class="api-key-settings">
+            <label for="openai-api-key">OpenAI API-Schlüssel:</label>
+            <div class="api-key-input">
+              <input type="password" id="openai-api-key" class="form-control" placeholder="sk-..." autocomplete="off">
+              <button id="toggle-api-key" class="btn btn-outline-secondary">
+                <span class="material-icons-round">visibility_off</span>
+              </button>
+            </div>
+            <small class="form-text text-muted">Ihr API-Schlüssel wird nur lokal in Ihrem Browser gespeichert.</small>
+          </div>
+          
+          <div class="api-key-actions">
+            <button id="save-api-key" class="btn btn-primary">Speichern</button>
+            <button id="clear-api-key" class="btn btn-outline-danger">Löschen</button>
+          </div>
+          
+          <div id="api-key-status" class="api-key-status mt-2"></div>
+          
+          <div class="mt-3">
+            <p>Wo erhalte ich einen API-Schlüssel?</p>
+            <ol>
+              <li>Besuchen Sie <a href="https://platform.openai.com/signup" target="_blank">OpenAI</a> und erstellen Sie ein Konto</li>
+              <li>Navigieren Sie zu API Keys und erstellen Sie einen neuen Schlüssel</li>
+              <li>Kopieren Sie den Schlüssel und fügen Sie ihn hier ein</li>
+            </ol>
+            <p><strong>Hinweis:</strong> Die Nutzung der OpenAI API ist mit Kosten verbunden, die direkt von OpenAI berechnet werden.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Import/Export modals -->
+  <div id="export-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Export Data</h2>
+        <span id="export-modal-close-btn" class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p>Export all your saved posts, categories, and folders as a JSON file.</p>
+        <div class="export-actions">
+          <button id="export-download-btn" class="btn btn-primary">
+            <span class="material-icons-round">file_download</span>
+            Download JSON
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="import-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Import Data</h2>
+        <span id="import-modal-close-btn" class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p>Import posts, categories, and folders from a previously exported JSON file.</p>
+        <div class="import-form">
+          <input type="file" id="import-file-input" class="form-control" accept=".json">
+          <div id="import-status" class="import-status"></div>
+        </div>
+        <div class="modal-actions">
+          <button id="import-apply-btn" class="btn btn-primary" disabled>Import</button>
+          <button id="import-cancel-btn" class="btn btn-secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Zusammenfassungs- und Clustering-Modal -->
+  <div id="summary-modal" class="modal">
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <h2>Thematisches Clustering & Zusammenfassung</h2>
+        <span id="summary-modal-close-btn" class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="summary-tabs">
+          <button id="tab-summary" class="summary-tab active">Zusammenfassung</button>
+          <button id="tab-similarities" class="summary-tab">Inhaltsüberschneidungen</button>
+          <button id="tab-clusters" class="summary-tab">Thematische Cluster</button>
+        </div>
+        
+        <div class="summary-tab-content">
+          <div id="summary-content" class="summary-content active">
+            <div id="summary-loading" class="loading-indicator">
+              <div class="spinner"></div>
+              <p>Zusammenfassung wird generiert...</p>
+            </div>
+            <div id="summary-result" class="summary-result hidden">
+              <h3>Zusammenfassung</h3>
+          <div class="api-key-info">
+            <span id="api-key-status-indicator">API-Schlüssel: <span class="status-unknown">Nicht konfiguriert</span></span>
+            <button id="show-api-settings" class="btn btn-sm btn-outline-secondary">
+              <span class="material-icons-round">settings</span>
+              Einrichten
+            </button>
+          </div>
+              <div id="summary-text"></div>
+              
+              <h3>Wichtige Erkenntnisse</h3>
+              <ul id="key-insights"></ul>
+              
+              <h3>Gemeinsame Themen</h3>
+              <div id="common-themes" class="tag-cloud"></div>
+            </div>
+          </div>
+          
+          <div id="similarities-content" class="summary-content">
+            <div id="similarity-loading" class="loading-indicator">
+              <div class="spinner"></div>
+              <p>Überschneidungen werden analysiert...</p>
+            </div>
+            <div id="similarity-result" class="summary-result hidden">
+              <h3>Inhaltsüberschneidungen</h3>
+              <div id="similarity-matrix" class="similarity-matrix"></div>
+              
+              <h3>Redundante Informationen</h3>
+              <ul id="redundant-info"></ul>
+            </div>
+          </div>
+          
+          <div id="clusters-content" class="summary-content">
+            <div id="clusters-loading" class="loading-indicator">
+              <div class="spinner"></div>
+              <p>Thematische Cluster werden identifiziert...</p>
+            </div>
+            <div id="clusters-result" class="summary-result hidden">
+              <h3>Thematische Cluster</h3>
+              <div id="cluster-visualization"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="ai-settings">
+          <div class="ai-toggle">
+            <label class="toggle-label">
+              <input type="checkbox" id="ai-toggle-checkbox">
+              <span class="toggle-text">KI-basierte Analyse nutzen (DSGVO-Hinweis)</span>
+            </label>
+            <div class="tooltip">
+              <span class="material-icons-round">info</span>
+              <span class="tooltip-text">Bei Aktivierung werden Ihre Posts zur Analyse an OpenAI gesendet. Alle Daten werden nur für die Analyse verwendet und nicht gespeichert. Gemäß DSGVO werden Ihre Daten nur mit Ihrer ausdrücklichen Zustimmung verarbeitet.</span>
+            </div>
+          </div>
+          <div class="api-key-info">
+            <span id="api-key-status-indicator">API-Schlüssel: <span class="status-unknown">Nicht konfiguriert</span></span>
+            <button id="show-api-settings" class="btn btn-sm btn-outline-secondary">
+              <span class="material-icons-round">settings</span>
+              Einrichten
+            </button>
+          </div>
+          <button id="summary-apply-btn" class="btn btn-primary">Generieren</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Hidden download link for export -->
+  <!-- Settings modal -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Einstellungen</h2>
+        <span class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="settings-section">
+          <h3>KI-Funktionen (OpenAI)</h3>
+          <p>Für die KI-basierten Funktionen (Zusammenfassungen, thematische Clustering) benötigen Sie einen eigenen API-Schlüssel von OpenAI.</p>
+          
+          <div class="api-key-settings">
+            <label for="openai-api-key">OpenAI API-Schlüssel:</label>
+            <div class="api-key-input">
+              <input type="password" id="openai-api-key" class="form-control" placeholder="sk-..." autocomplete="off">
+              <button id="toggle-api-key" class="btn btn-outline-secondary">
+                <span class="material-icons-round">visibility_off</span>
+              </button>
+            </div>
+            <small class="form-text text-muted">Ihr API-Schlüssel wird nur lokal in Ihrem Browser gespeichert.</small>
+          </div>
+          
+          <div class="api-key-actions">
+            <button id="save-api-key" class="btn btn-primary">Speichern</button>
+            <button id="clear-api-key" class="btn btn-outline-danger">Löschen</button>
+          </div>
+          
+          <div id="api-key-status" class="api-key-status mt-2"></div>
+          
+          <div class="mt-3">
+            <p>Wo erhalte ich einen API-Schlüssel?</p>
+            <ol>
+              <li>Besuchen Sie <a href="https://platform.openai.com/signup" target="_blank">OpenAI</a> und erstellen Sie ein Konto</li>
+              <li>Navigieren Sie zu API Keys und erstellen Sie einen neuen Schlüssel</li>
+              <li>Kopieren Sie den Schlüssel und fügen Sie ihn hier ein</li>
+            </ol>
+            <p><strong>Hinweis:</strong> Die Nutzung der OpenAI API ist mit Kosten verbunden, die direkt von OpenAI berechnet werden.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a id="download-link" style="display: none;"></a>
+  
+  <script src="../utils/storage.js" type="module"></script>
+  <script src="../utils/post-processor.js" type="module"></script>
+  <script src="../utils/ai-service.js" type="module"></script>
+  <script src="api-key-settings.js" type="module"></script>
+  <script src="sidebar.js" type="module"></script>
+</body>
+</html>
