@@ -1,0 +1,67 @@
+{
+  "manifest_version": 3,
+  "name": "Professional Post Saver",
+  "version": "5.2",
+  "description": "Save, organize and categorize professional posts from LinkedIn for future reference",
+  "author": "Professional Post Saver Team",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "contextMenus",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://www.linkedin.com/*",
+    "https://linkedin.com/*",
+    "https://api.openai.com/*"
+  ],
+  "icons": {
+    "16": "assets/icon16.svg",
+    "48": "assets/icon48.svg",
+    "128": "assets/icon128.svg"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "assets/icon16.svg",
+      "48": "assets/icon48.svg",
+      "128": "assets/icon128.svg"
+    },
+    "default_title": "Professional Post Saver"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.linkedin.com/*",
+        "https://linkedin.com/*"
+      ],
+      "js": ["content-scripts/linkedin-post-extractor.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "sidebar/sidebar.html",
+        "popup/popup.html",
+        "popup/popup.js",
+        "sidebar/sidebar.js",
+        "sidebar/api-key-settings.js",
+        "utils/post-processor.js",
+        "utils/storage.js",
+        "utils/ai-service.js",
+        "assets/*"
+      ],
+      "matches": ["https://www.linkedin.com/*", "https://linkedin.com/*", "<all_urls>"]
+    }
+  ],
+  "options_ui": {
+    "page": "sidebar/sidebar.html",
+    "open_in_tab": true
+  }
+}
